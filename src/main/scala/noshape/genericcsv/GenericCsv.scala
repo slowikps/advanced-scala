@@ -1,6 +1,5 @@
 package noshape.genericcsv
 
-import noshape.genericcsv.GenericCsv.Person
 import shapeless.{::, Generic, HList, HNil}
 
 trait CsvEncoder[A] {
@@ -25,9 +24,11 @@ object CsvEncoder {
 object GenericCsv extends App {
 
   def createEncoder[A](func: A => List[String]): CsvEncoder[A] = (value: A) => func(value)
+  def createEncoder2[A](func: A => List[String]): A => List[String] = (value: A) => func(value)
+  def runnable(fun: => Unit): Runnable = () => fun
 
   implicit val stringEncoder: CsvEncoder[String] =
-    createEncoder(str => List(str))
+    CsvEncoder.instance(str => List(str))
 
   implicit val intEncoder: CsvEncoder[Int] =
     createEncoder(num => List(num.toString))
@@ -35,20 +36,19 @@ object GenericCsv extends App {
   implicit val booleanEncoder: CsvEncoder[Boolean] =
     createEncoder(bool => List(if (bool) "yes" else "no"))
 
-
   implicit val hnilEncoder: CsvEncoder[HNil] =
-  createEncoder(hnil => Nil)
+    createEncoder(hnil => Nil)
 
   implicit def hlistEncoder[H, T <: HList](implicit hEncoder: CsvEncoder[H], tEncoder: CsvEncoder[T]): CsvEncoder[H :: T] =
-  createEncoder {
-    case h :: t =>
-      hEncoder.encode(h) ++ tEncoder.encode(t)
-  }
+    createEncoder {
+      case h :: t =>
+        hEncoder.encode(h) ++ tEncoder.encode(t)
+    }
 
   val reprEncoder: CsvEncoder[String :: Int :: Boolean :: HNil] = implicitly
 
   println(
-  reprEncoder.encode("abc" :: 123 :: true :: HNil)
+    reprEncoder.encode("abc" :: 123 :: true :: HNil)
   )
 
   case class Person(name: String, surname: String, age: Int)
@@ -56,14 +56,13 @@ object GenericCsv extends App {
 
   val john = Person("John", "NotKnown", 25)
   implicit def genericEncoder[A, R](
-  implicit
-  gen: Generic[A] { type Repr = R }, //Generic.Aux[A, R],
-  enc: CsvEncoder[R]
+      implicit
+      gen: Generic[A] { type Repr = R }, //Generic.Aux[A, R],
+      enc: CsvEncoder[R]
   ): CsvEncoder[A] = createEncoder(a => enc.encode(gen.to(a)))
 
-
   println(
-  "John: " + CsvEncoder[Person].encode(john)
+    "John: " + CsvEncoder[Person].encode(john)
   )
 
 //  implicit val doubleEncoder: CsvEncoder[Double] =
