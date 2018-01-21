@@ -73,4 +73,6 @@ object LabelledGenericTest extends App {
   val keys = implicitly[Keys[labelledGeneric.Repr]].apply
   println("keys: " + keys)
   println("lastField: " + lastField(DataCC("pawel", "s", 31, true)))
+
+  print("labelledGeneric: " + labelledGeneric.toString)
 }
