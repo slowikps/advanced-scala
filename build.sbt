@@ -4,9 +4,9 @@ version := "1.0"
 
 scalaVersion := "2.12.4"
 
-val circeVersion = "0.8.0"
+val circeVersion = "0.9.1"
 
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.5")
+addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
 
 libraryDependencies ++= Seq(
   "com.chuusai" %% "shapeless"            % "2.3.3",
@@ -15,12 +15,12 @@ libraryDependencies ++= Seq(
   "io.circe"    %% "circe-parser"         % circeVersion,
   "io.circe"    %% "circe-generic-extras" % circeVersion,
   "io.circe"    %% "circe-optics"         % circeVersion,
-  "org.atnos"   %% "eff"                  % "4.5.0",
+  "org.atnos"   %% "eff"                  % "5.0.0",
   //Akka http
-  "com.typesafe.akka" %% "akka-http"            % "10.1.0-RC1",
-  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.0-RC1",
+  "com.typesafe.akka" %% "akka-http"            % "10.1.0-RC2",
+  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.0-RC2",
   "com.typesafe.akka" %% "akka-stream"          % "2.5.8" // or whatever the latest version is
 )
 
-// to get types like Reader[String, ?] (with more than one type parameter) correctly inferred for scala 2.12.x
+
 scalacOptions += "-Ypartial-unification"

@@ -65,7 +65,7 @@ object IntroWithSprayJson {
       entry.logTo(loggingAdapter)
     }
 
-    def printResponseTime(log: LoggingAdapter) = {
+    def printResponseTime(log: LoggingAdapter): HttpRequest => RouteResult => Unit = {
       val requestTimestamp = System.nanoTime
       akkaResponseTimeLoggingFunction(log, requestTimestamp)(_)
     }

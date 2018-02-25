@@ -1,4 +1,4 @@
-package effects
+package monad_transformers.eff
 
 import cats.data._
 import org.atnos.eff._
