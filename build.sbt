@@ -1,26 +1,40 @@
-name := "advanced-scala"
+lazy val root = (project in file("."))
+  .settings(commonSettings)
+  .settings(publish := {})
 
-version := "1.0"
-
-scalaVersion := "2.12.4"
-
-val circeVersion = "0.9.1"
-
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
-
-libraryDependencies ++= Seq(
-  "com.chuusai" %% "shapeless"            % "2.3.3",
-  "io.circe"    %% "circe-core"           % circeVersion,
-  "io.circe"    %% "circe-generic"        % circeVersion,
-  "io.circe"    %% "circe-parser"         % circeVersion,
-  "io.circe"    %% "circe-generic-extras" % circeVersion,
-  "io.circe"    %% "circe-optics"         % circeVersion,
-  "org.atnos"   %% "eff"                  % "5.0.0",
-  //Akka http
-  "com.typesafe.akka" %% "akka-http"            % "10.1.0-RC2",
-  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.0-RC2",
-  "com.typesafe.akka" %% "akka-stream"          % "2.5.8" // or whatever the latest version is
+lazy val commonSettings = Seq(
+  version := "0.1",
+  name := "advanced-scala",
+  organization := "slowikps",
+  scalaVersion := "2.13.1",
+  credentials ++= Seq(
+    Credentials(Path.userHome / ".sbt" / ".bintrayCredentials"),
+    Credentials(Path.userHome / ".sbt" / ".nexusCredentials")
+  ),
+  resolvers ++= Seq(
+    Resolver.bintrayRepo("vizog", "maven"),
+    Resolver.jcenterRepo,
+    Resolver.sonatypeRepo("releases"),
+    "jitpack" at "https://jitpack.io/"
+  ),
+  libraryDependencies := dependencies,
 )
 
-
-scalacOptions += "-Ypartial-unification"
+val dependencies = Seq(
+  "com.chuusai" %% "shapeless" % "2.3.3",
+  "org.atnos"   %% "eff"       % "5.5.2",
+  //Akka http
+  "com.typesafe.akka" %% "akka-http"            % "10.1.11",
+  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.11",
+  "com.typesafe.akka" %% "akka-stream"          % "2.6.1" // or whatever the latest version is
+) ++ Seq(
+  "io.circe" %% "circe-core",
+  "io.circe" %% "circe-generic",
+  "io.circe" %% "circe-generic-extras",
+  "io.circe" %% "circe-parser",
+  "io.circe" %% "circe-optics"
+).map(_           % "0.12.0") ++ Seq(
+  "org.scalactic" %% "scalactic" % "3.1.0",
+  "org.scalatest" %% "scalatest" % "3.1.0" % "test"
+)
+addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full)

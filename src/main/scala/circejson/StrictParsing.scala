@@ -40,14 +40,14 @@ object StrictParsing extends App {
       def checkExtraFields(): StateT[Either[DecodingFailure, ?], ACursor, Unit] = {
         StateT { c =>
           {
-            val fields: Seq[String] = c.focus.flatMap(_.asObject).toList.flatMap(_.fields)
+            val fields: Seq[String] = c.focus.flatMap(_.asObject).toList.flatMap(_.keys)
             if (fields.isEmpty) (c, ()).asRight
             else (DecodingFailure(s"Leftovers: ${fields.mkString(", ")}", c.history)).asLeft
           }
         }
       }
       override def apply(c: HCursor) = {
-        println(c.fields)
+        println(c.keys)
         (for {
           age     <- getAndRemoveNew[Int]("age")
           surname <- getAndRemoveNew[String]("surname")

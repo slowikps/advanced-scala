@@ -7,7 +7,7 @@ object Basics extends App {
   import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
   import io.circe.generic.extras._
-  implicit val config: Configuration = Configuration.default.withSnakeCaseKeys
+  implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames
 
   sealed trait Foo
   // defined trait Foo

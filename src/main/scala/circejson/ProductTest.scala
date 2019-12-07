@@ -39,7 +39,7 @@ object ProductTest extends App {
 
   val decoderWithValidate = testDecoder.validate(
     (cursor: HCursor) => {
-      println(cursor.fields)
+      println(cursor.keys)
       numberOfFields[ProductTest]
       true
   }, "too many data")
