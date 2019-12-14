@@ -4,7 +4,7 @@ import org.scalatest._
 import org.scalatest.matchers.should.Matchers
 
 class Day5SunnyWithChanceOfAsteroidsTest extends FlatSpec with Matchers {
-  import Day5SunnyWithChanceOfAsteroids._
+  import Day9SensorBoost._
 
   "Day 5:  sample from website" should " work" in {
     intCode(Seq(3,9,8,9,10,9,4,9,99,-1,8), 8) should be(1)

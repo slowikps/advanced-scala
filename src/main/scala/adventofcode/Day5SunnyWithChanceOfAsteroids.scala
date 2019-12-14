@@ -52,14 +52,17 @@ object Day5SunnyWithChanceOfAsteroids {
 
 case class ParameterMode(opCode: Int, private val modes: List[Mode]) {
   def mode(offset: Int): Mode = modes.applyOrElse(offset, (_: Int) => PositionMode)
+    //modes.applyOrElse(offset, (_: Int) => PositionMode)
 }
 object ParameterMode {
-  def fromInt(in: Int): ParameterMode = {
-    val opCode = in % 100
+  def fromInt(in: Int): ParameterMode = fromLong(in.toLong)
+  def fromLong(in: Long): ParameterMode = {
+    val opCode = (in % 100).toInt
     val modes = (in / 100).toString
       .map {
         case '0' => PositionMode
         case '1' => ImmediateMode
+        case '2' => RelativeMode
       }
       .toList
       .reverse
@@ -70,3 +73,4 @@ object ParameterMode {
 sealed trait Mode
 case object PositionMode  extends Mode
 case object ImmediateMode extends Mode
+case object RelativeMode  extends Mode
