@@ -6,21 +6,20 @@ object Day3CrossedWires {
 
   def smallestNumberOfSteps(w1: String, w2: String): Int = {
     val moves1 =
-      executeMoves(parse(w1))
-        .zipWithIndex
+      executeMoves(parse(w1)).zipWithIndex
         .groupBy(_._1)
         .mapValues(_.minBy(_._2))
     val moves2 =
-      executeMoves(parse(w2))
-      .zipWithIndex
-      .groupBy(_._1)
-      .mapValues(_.minBy(_._2))
+      executeMoves(parse(w2)).zipWithIndex
+        .groupBy(_._1)
+        .mapValues(_.minBy(_._2))
 
-    (moves1.keySet intersect moves2.keySet).foldLeft(Int.MaxValue){
-      case (min, pair@(x , y)) => Math.min(
-        moves1(pair)._2 + moves2(pair)._2,
-        min
-      )
+    (moves1.keySet intersect moves2.keySet).foldLeft(Int.MaxValue) {
+      case (min, pair @ (x, y)) =>
+        Math.min(
+          moves1(pair)._2 + moves2(pair)._2,
+          min
+        )
     } + 2
   }
   def manhattanDistance(w1: String, w2: String): Int = {
@@ -75,7 +74,16 @@ object Move {
 }
 case class Move(steps: Int, direction: Direction)
 
-sealed trait Direction
+sealed trait Direction {
+  def opposite(): Direction = this match {
+    case Up    => Down
+    case Down  => Up
+    case Left  => Right
+    case Right => Left
+  }
+
+}
+
 case object Up    extends Direction
 case object Down  extends Direction
 case object Left  extends Direction

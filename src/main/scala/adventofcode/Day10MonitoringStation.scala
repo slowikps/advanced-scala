@@ -13,6 +13,13 @@ case class Point(x: Int, y: Int) {
     val distance      = Math.sqrt(deltaY * deltaY + deltaX * deltaX)
     AngleAndDistance(that, distance, angle)
   }
+
+  def move(direction: Direction): Point = direction match {
+    case Up    => Point(x, y + 1)
+    case Down  => Point(x, y - 1)
+    case Left  => Point(x - 1, y)
+    case Right => Point(x + 1, y)
+  }
 }
 object Day10MonitoringStation {
 
@@ -24,7 +31,7 @@ object Day10MonitoringStation {
     val angleToAsteroidsSortedByDistance: MapView[Double, ArrayBuffer[AngleAndDistance]] =
       asteroidDetails(in)
         .maxBy(_._2.size) // Best location
-        ._2 //Angle to asteroids visible from best location
+        ._2               //Angle to asteroids visible from best location
         .view
         .mapValues(asteroids => ArrayBuffer(asteroids.sortBy(_.distance): _*))
 
